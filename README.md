@@ -78,4 +78,4 @@ Because Nexus translates natural language to executable SQL against active datab
 3.  **Read-Only Scope Protocol:** The AI node fundamentally operates strictly on `SELECT` statements, with destructive actions naturally stripped.
 
 ---
-_Engineered by Koushik & Antigravity._
+_Engineered by Koushik_

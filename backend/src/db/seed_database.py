@@ -15,7 +15,8 @@ from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 # ============================================================
 # DATABASE CONNECTION
 # ============================================================
-DATABASE_URL = "postgresql://nexus_admin:nexus_secret_2026@localhost:5432/nexus_enterprise"
+import os
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgresql://nexus_admin:nexus_secret_2026@localhost:5432/nexus_enterprise")
 engine = create_engine(DATABASE_URL, echo=False)
 Base = declarative_base()
 fake = Faker()

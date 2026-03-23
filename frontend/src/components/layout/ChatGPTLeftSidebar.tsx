@@ -11,7 +11,8 @@ export function ChatGPTLeftSidebar({ sessionId, isOpen, onClose, onNewChat }: { 
 
     useEffect(() => {
         if (isOpen) {
-            fetch("http://localhost:8000/schema", {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://nexus-api-backend-atckcaggb2ahhzgf.centralus-01.azurewebsites.net";
+            fetch(`${API_URL}/schema`, {
                 headers: { "X-Session-ID": sessionId }
             })
                 .then((res) => res.json())

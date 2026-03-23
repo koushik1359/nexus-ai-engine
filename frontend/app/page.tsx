@@ -20,6 +20,7 @@ import { ChatGPTLeftSidebar } from "../src/components/layout/ChatGPTLeftSidebar"
 // ============================================================
 // MAIN PAGE
 // ============================================================
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://nexus-api-backend-atckcaggb2ahhzgf.centralus-01.azurewebsites.net";
 
 export default function Home() {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -73,7 +74,7 @@ export default function Home() {
         formData.append("file", file);
 
         try {
-            const res = await fetch("http://localhost:8000/upload", {
+            const res = await fetch(`${API_URL}/upload`, {
                 method: "POST",
                 headers: { "X-Session-ID": sessionId },
                 body: formData,
@@ -114,7 +115,7 @@ export default function Home() {
         setCurrentSteps([]);
 
         try {
-            const response = await fetch("http://localhost:8000/query/stream", {
+            const response = await fetch(`${API_URL}/query/stream`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
@@ -368,7 +369,7 @@ export default function Home() {
                                                     onClick={async () => {
                                                         const prevMsg = messages[i - 1];
                                                         if (!prevMsg) return;
-                                                        const resp = await fetch("http://localhost:8000/export", {
+                                                        const resp = await fetch(`${API_URL}/export`, {
                                                             method: "POST",
                                                             headers: { 
                                                                 "Content-Type": "application/json",

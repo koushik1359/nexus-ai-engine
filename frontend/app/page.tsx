@@ -174,10 +174,11 @@ export default function Home() {
                 },
             ]);
             setCurrentSteps([]);
-        } catch {
+        } catch (err) {
+            console.error("Fetch error:", err);
             setMessages((prev) => [
                 ...prev,
-                { role: "assistant", content: "Connection error. Is the backend running on port 8000?" },
+                { role: "assistant", content: "Connection error. Is the backend service online?" },
             ]);
         } finally {
             setIsLoading(false);

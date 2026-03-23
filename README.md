@@ -1,99 +1,81 @@
-# 🌌 Nexus AI Engine
+# Nexus AI Engine
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js" alt="Next.js" />
-  <img src="https://img.shields.io/badge/FastAPI-0.104-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
-  <img src="https://img.shields.io/badge/LangGraph-0.0.21-FF4F00?style=for-the-badge" alt="LangGraph" />
-  <img src="https://img.shields.io/badge/PostgreSQL-15-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <h3>An Enterprise-Grade, Multi-Tenant GenAI Data Platform</h3>
 </div>
 
-<br/>
-
-**Nexus AI Engine** is a proprietary, enterprise-grade Chat-to-SQL platform. Powered by **GPT-4o** and **LangGraph**, it enables decision-makers to query vast PostgreSQL databases using natural English phrasing. The engine dynamically evaluates schema structures, generates optimized SQL, executes queries, and automatically renders analytical charts—all within a sleek, modern ChatGPT-style interface.
-
-## ✨ Key Features
-
-- **🧠 Multi-Agent LangGraph System**: Uses a Router, SQL Coder, Database Executor, and Final Analyst to ensure 100% accurate, hallucination-free SQL generation and query execution.
-- **📊 Auto-Generated Visualizations**: Automatically detects when aggregate data is returned and dynamically renders beautiful Recharts (Pie & Bar charts).
-- **📥 Deep Data Integration**: Easily upload raw `.csv` or `.sql` files directly from the UI to instantly create tables in the live Postgres database.
-- **👀 Real-Time Schema Discovery**: The AI dynamically inspects the database schema on every query, ensuring complete awareness of user-uploaded tables without manual prompt design.
-- **🎨 Premium Interface**: Developed with Next.js 14 and TailwindCSS, featuring a strictly implemented ChatGPT visual design language—complete with transparent flush-left bot avatars, dynamic dark mode palettes, and sticky minimalist input logic.
-- **⚡ Production Ready**: Fully containerized using a multi-stage Next.js standalone Docker build, accompanied by FastAPI and PostgreSQL services orchestrated via `docker-compose`.
-
-## 🏗 Architecture
-
-The system follows a strict decoupling between the user interface and the cognitive engine:
-
-1. **Frontend (Next.js / React)**: A highly-organized component architecture (`src/components/ui/`, `src/components/layout/`) housing the Chat interface, Data Explorer sidebar, and Markdown renderer.
-2. **Backend (FastAPI / Python)**: Exposes RESTful endpoints for schema introspection, real-time message streaming (`StreamingResponse`), and CSV ingestion.
-3. **Intelligence (LangGraph / LangChain)**: Maintains computational state between the LLM and the physical Database. If a SQL query fails, the Executor agent recursively prompts the SQL Coder with the Postgres Error Trace to attempt a self-healing auto-fix.
-
-## 🚀 Getting Started
-
-To run the application locally, you just need Docker installed.
-
-### Prerequisites
-- Docker Desktop
-- OpenAI API Key
-
-### Running with Docker Compose
-
-1. Clone the repository:
-```bash
-git clone https://github.com/your-username/nexus-ai-engine.git
-cd nexus-ai-engine
-```
-
-2. Set your environment variables:
-Create a `.env` file in the root directory and add your OpenAI key:
-```bash
-OPENAI_API_KEY=sk-your-api-key-here
-```
-
-3. Spin up the containers:
-```bash
-docker-compose up --build -d
-```
-
-4. **Access the application**:
-   - Web UI: http://localhost:3000
-   - Backend API Docs: http://localhost:8000/docs
-   - PostgreSQL is running on port `5432` internally.
-
-*Note: The first time you launch, it may take a minute for the PostgreSQL container to initialize fully. The backend is configured to wait (`depends_on: service_healthy`) before it starts accepting AI queries.*
-
-## 📂 Project Structure
-
-```text
-nexus_ai_engine/
-├── backend/
-│   ├── src/
-│   │   ├── main.py              # FastAPI endpoints & streaming logic
-│   │   └── agents/
-│   │       ├── graph.py         # LangGraph state machine & nodes
-│   │       └── prompts.py       # Few-shot prompting and system messages
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/
-│   ├── app/
-│   │   ├── layout.tsx
-│   │   └── page.tsx             # Main chat application logic
-│   ├── src/
-│   │   ├── components/          # Reusable UI & Layout chunks
-│   │   ├── lib/                 # Utilities (chart parsing)
-│   │   └── types/               # TypeScript interfaces
-│   ├── Dockerfile
-│   └── next.config.ts
-├── docker-compose.yml           # Unified orchestration
-└── README.md
-```
-
-## 📈 Future Roadmap
-
-- [ ] **Implementation of SSO (Single Sign-On)** via NextAuth to protect the dashboard.
-- [ ] **Persistent Chat Memory**: Storing conversation threads into Postgres rather than LocalStorage.
-- [ ] **Export to PDF**: Generating fully embedded automated reports containing charts + text.
+**Nexus AI Engine** is a powerful Chat-to-SQL platform that allows users to upload raw data files (CSVs and SQL dumps) and converse with their data using a LangGraph-powered AI Agent. It is engineered with strict multi-tenancy rules to ensure physical data isolation between varying browser sessions in a true serverless PostgreSQL architecture.
 
 ---
-*Built with modern tooling by Koushik.*
+
+## 🌟 Key Features
+
+*   **Generative AI Data Agent:** Powered by OpenAI and LangGraph, the agent writes, validates, and executes complex PostgreSQL queries to answer natural language questions about uploaded datasets.
+*   **True Sandbox Multi-Tenancy:** Uploading a file dynamically creates an isolated `sess_XYZ` namespace within PostgreSQL. The LangGraph agent is scoped exclusively to the user's isolated session via strict `search_path` manipulation, ensuring zero cross-tenant data leakage.
+*   **Enterprise Architecture:** Container-ready, microservices architecture splitting a robust FastAPI python backend from a sleek Next.js React frontend.
+*   **Zero-Dollar Cloud Deployment:** Optimized out-of-the-box to run entirely on Azure's Free (F1) tiers and Neon's serverless DBs.
+
+---
+
+## 🏗️ Architecture Stack
+
+### Components
+1. **Frontend:** **Next.js 15 (React)** — featuring a modern, dark-mode ChatGPT-styled UI built with TailwindCSS and Lucide-React.
+2. **Backend:** **Python 3.11 (FastAPI)** — highly asynchronous routing managing multipart file streaming and streaming LLM responses.
+3. **AI Logic Engine:** **LangGraph & LangChain** — utilizing a ReAct state graph architecture (`sql_coder_node`, `executor_node`, `db_executor_node`, `analyst_node`).
+4. **Database:** **PostgreSQL (Neon)** — utilizing dynamically generated schemas for session management.
+
+### Platform Integrations
+*   **Azure Static Web Apps:** Global CDN hosting the compiled Next.js standalone UI.
+*   **Azure App Services (Linux F1):** Executing the Uvicorn ASGI server natively.
+*   **GitHub Actions:** Automated CI/CD pipelines deploying directly to the Microsoft Cloud.
+
+---
+
+## 🚀 Local Development Setup
+
+To run Nexus AI Engine safely on your local machine, you will need two terminal windows.
+
+### Prerequisites
+*   Node.js v18+
+*   Python 3.11+
+*   A running PostgreSQL database (locally or via Neon.tech) 
+*   An OpenAI API Key
+
+### 1. Configure Secrets
+Create a `.env` file at the absolute root of the repository (`nexus_ai_engine/.env`):
+```ini
+OPENAI_API_KEY=sk-proj-YOUR_OPENAI_KEY
+DATABASE_URL=postgresql://user:password@hostname/dbname
+```
+
+### 2. Boot the Python API
+```bash
+# From the root directory
+cd backend
+python -m venv venv
+source venv/bin/activate  # (On Windows use `venv\Scripts\activate`)
+pip install -r requirements.txt
+python -m uvicorn src.main:app --reload --port 8000
+```
+
+### 3. Boot the Next.js UI
+```bash
+# In a new terminal, from the root directory
+cd frontend
+npm install
+npm run dev
+```
+
+Navigate to `http://localhost:3000` in your browser.
+
+---
+
+## 🛡️ Security Implementation
+Because Nexus translates natural language to executable SQL against active databases, stringent security protocols were designed:
+1.  **DLP & Schema Isolation:** Agents route into isolated, randomly-generated session schemas.
+2.  **DDL Injection Prevention:** Input parameters like `X-Session-ID` undergo strict RegEx alphanumeric sanitization prior to interacting with SQLAlchemy text wrappers.
+3.  **Read-Only Scope Protocol:** The AI node fundamentally operates strictly on `SELECT` statements, with destructive actions naturally stripped.
+
+---
+_Engineered by Koushik & Antigravity._
